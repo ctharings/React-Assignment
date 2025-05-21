@@ -15,6 +15,12 @@ A modern, feature-rich Todo application built with React and Vite. This applicat
 - 📱 Responsive design
 - 📈 Real-time statistics
 - 🧪 Comprehensive test suite
+- 💾 Local storage persistence
+- ♿ Accessibility features
+- ⌨️ Keyboard navigation
+- 🚨 Error boundary handling
+- ⏳ Loading states
+- 📝 Empty state handling
 
 ## Tech Stack
 
@@ -61,6 +67,7 @@ The application will be available at `http://localhost:5173`
 - `npm run test:ui` - Run tests with UI
 - `npm run test:coverage` - Run tests with coverage
 - `npm run lint` - Run ESLint
+- `npm run deploy` - Deploy to GitHub Pages
 
 ## Project Structure
 
@@ -69,7 +76,12 @@ src/
 ├── components/
 │   ├── TodoForm.jsx      # Form for adding new todos
 │   ├── TodoList.jsx      # List of todos with actions
-│   └── TodoStats.jsx     # Statistics display
+│   ├── TodoStats.jsx     # Statistics display
+│   ├── ErrorBoundary.jsx # Error handling component
+│   ├── LoadingSpinner.jsx # Loading state component
+│   └── EmptyState.jsx    # Empty state component
+├── hooks/
+│   └── useLocalStorage.js # Custom hook for persistence
 ├── test/
 │   └── setup.js          # Test configuration
 ├── App.jsx              # Main application component
@@ -85,6 +97,9 @@ The project uses Vitest and Testing Library for comprehensive testing. Tests are
 - User interactions
 - State management
 - Edge cases
+- Error handling
+- Loading states
+- Empty states
 
 Run tests with:
 ```bash
@@ -118,6 +133,35 @@ npm run test:coverage
 
 The report will be available in the terminal and as an HTML file in the `coverage/` directory.
 
+## Features in Detail
+
+### Error Handling
+- Global error boundary catches and displays runtime errors
+- Graceful fallback UI with refresh option
+- Error logging for debugging
+
+### Loading States
+- Animated loading spinner
+- Accessible loading indicators
+- Screen reader support
+
+### Empty States
+- Clear messaging for no todos
+- Call-to-action for adding first todo
+- Consistent styling with main UI
+
+### Local Storage
+- Automatic persistence of todos
+- Seamless state restoration
+- Error handling for storage issues
+
+### Accessibility
+- ARIA labels and roles
+- Keyboard navigation support
+- Screen reader compatibility
+- Focus management
+- Semantic HTML structure
+
 ## Styling
 
 The application uses SCSS for styling with:
@@ -125,6 +169,7 @@ The application uses SCSS for styling with:
 - Mixins for reusable styles
 - Nested rules for better organization
 - Responsive design patterns
+- Animations for better UX
 
 ## Contributing
 
