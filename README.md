@@ -2,7 +2,7 @@
 
 ## Live Demo
 
-[View the app on GitHub Pages](https://ctharings.github.io/React-Assignment/)
+<a href="https://ctharings.github.io/React-Assignment/" target="_blank" rel="noopener noreferrer">View the app on GitHub Pages</a>
 
 A modern, feature-rich Todo application built with React and Vite. This application demonstrates best practices in React development, including component composition, state management, and testing.
 
