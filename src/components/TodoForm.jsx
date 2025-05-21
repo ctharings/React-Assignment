@@ -30,6 +30,8 @@ function TodoForm({ addTodo }) {
         value={priority}
         onChange={(e) => setPriority(e.target.value)}
         className="priority-select"
+        aria-label="Priority"
+        role="combobox"
       >
         <option value="Low">Low</option>
         <option value="Medium">Medium</option>

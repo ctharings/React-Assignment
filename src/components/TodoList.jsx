@@ -23,7 +23,7 @@ function TodoList({ todos, toggleTodo, deleteTodo }) {
               onChange={() => toggleTodo(todo.id)}
               className="todo-checkbox"
             />
-            <span className={`todo-title ${getPriorityColor(todo.priority)}`}>
+            <span className={`todo-title ${getPriorityColor(todo.priority)}`} data-testid="todo-title">
               {todo.title}
             </span>
             <span className="todo-priority">{todo.priority}</span>

@@ -97,40 +97,34 @@ describe('App', () => {
     const user = userEvent.setup();
     render(<App />);
 
-    // Add todos with different priorities
+    // Add a low priority todo
     const input = screen.getByPlaceholderText('Add a new todo...');
-    const prioritySelect = screen.getAllByRole('combobox')[1];
-    const addButton = screen.getByRole('button', { name: /add todo/i });
-
-    // Add low priority todo
     await user.type(input, 'Low Priority Todo');
-    await user.selectOptions(prioritySelect, 'Low');
-    await user.click(addButton);
+    await user.click(screen.getByRole('button', { name: /add todo/i }));
 
-    // Clear input
+    // Add a high priority todo
     await user.clear(input);
-
-    // Add high priority todo
     await user.type(input, 'High Priority Todo');
+    const prioritySelect = screen.getByRole('combobox', { name: /priority/i });
     await user.selectOptions(prioritySelect, 'High');
-    await user.click(addButton);
+    await user.click(screen.getByRole('button', { name: /add todo/i }));
 
-    // Wait for both todos to be added
-    await waitFor(() => {
-      expect(screen.getByText('Low Priority Todo')).toBeInTheDocument();
-      expect(screen.getByText('High Priority Todo')).toBeInTheDocument();
-    });
+    // Verify both todos are added
+    const todoTitles = screen.getAllByTestId('todo-title');
+    expect(todoTitles).toHaveLength(2);
+    expect(todoTitles[0]).toHaveTextContent('High Priority Todo');
+    expect(todoTitles[1]).toHaveTextContent('Low Priority Todo');
 
-    // Sort by priority
+    // Sort by priority (should maintain the same order since they're already sorted)
     const sortSelect = screen.getAllByRole('combobox')[2];
     await user.selectOptions(sortSelect, 'priority');
 
-    // Wait for the sort to be applied
-    await waitFor(() => {
-      const todoList = screen.getByRole('list');
-      const todoItems = todoList.querySelectorAll('.todo-item');
-      expect(todoItems[0]).toHaveTextContent('High Priority Todo');
-      expect(todoItems[1]).toHaveTextContent('Low Priority Todo');
-    });
+    // Verify the order after sorting
+    const todoList = screen.getByRole('list');
+    const todoItems = todoList.querySelectorAll('[role="listitem"]');
+    const firstTodo = todoItems[0].querySelector('[data-testid="todo-title"]');
+    const secondTodo = todoItems[1].querySelector('[data-testid="todo-title"]');
+    expect(firstTodo).toHaveTextContent('High Priority Todo');
+    expect(secondTodo).toHaveTextContent('Low Priority Todo');
   });
 });
