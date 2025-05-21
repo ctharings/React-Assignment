@@ -61,7 +61,7 @@ function App() {
       <h1>Todo App</h1>
 
       {/* Filter and Sort Controls */}
-      <div className="controls">
+      <div className="controls" role="group" aria-label="filter and sort controls">
         <select value={filter} onChange={(e) => setFilter(e.target.value)}>
           <option value="all">All</option>
           <option value="active">Active</option>

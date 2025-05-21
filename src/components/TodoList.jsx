@@ -13,9 +13,9 @@ function TodoList({ todos, toggleTodo, deleteTodo }) {
   };
 
   return (
-    <div className="todo-list">
+    <div className="todo-list" role="list">
       {todos.map((todo) => (
-        <div key={todo.id} className={`todo-item ${todo.completed ? 'completed' : ''}`}>
+        <div key={todo.id} className={`todo-item ${todo.completed ? 'completed' : ''}`} role="listitem">
           <div className="todo-content">
             <input
               type="checkbox"
