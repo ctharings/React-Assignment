@@ -1,5 +1,9 @@
 # React Todo App
 
+## Live Demo
+
+[View the app on GitHub Pages](https://ctharings.github.io/React-Assignement/)
+
 A modern, feature-rich Todo application built with React and Vite. This application demonstrates best practices in React development, including component composition, state management, and testing.
 
 ## Features
@@ -86,6 +90,33 @@ Run tests with:
 ```bash
 npm test
 ```
+
+### Test Coverage
+
+The project maintains high test coverage:
+
+```
+----------------|---------|----------|---------|---------|-------------------
+File            | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
+----------------|---------|----------|---------|---------|-------------------
+All files       |   93.87 |    92.85 |   88.88 |   93.87 |
+src             |    86.9 |       90 |   77.77 |    86.9 |
+ App.jsx        |   97.33 |    94.73 |    87.5 |   97.33 | 32-33
+ main.jsx       |       0 |        0 |       0 |       0 | 1-10
+src/components  |    99.1 |    95.45 |     100 |    99.1 |
+ TodoForm.jsx   |     100 |      100 |     100 |     100 |
+ TodoList.jsx   |   97.43 |     90.9 |     100 |   97.43 | 11
+ TodoStats.jsx  |     100 |      100 |     100 |     100 |
+----------------|---------|----------|---------|---------|-------------------
+```
+
+To generate a coverage report, run:
+
+```bash
+npm run test:coverage
+```
+
+The report will be available in the terminal and as an HTML file in the `coverage/` directory.
 
 ## Styling
 
