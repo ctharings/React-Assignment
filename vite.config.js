@@ -10,5 +10,5 @@ export default defineConfig({
     setupFiles: ['./src/test/setup.js'],
     css: true,
   },
-  base: '/React-Assignement/',
+  base: '/React-Assignment/',
 })
