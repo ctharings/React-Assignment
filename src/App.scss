@@ -1,0 +1,215 @@
+// Variables
+$primary-color: #646cff;
+$high-priority: #ff4d4d;
+$medium-priority: #ffa64d;
+$low-priority: #4dff4d;
+$completed-color: #888;
+$border-radius: 4px;
+$box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+}
+
+@mixin button-base {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: $border-radius;
+  cursor: pointer;
+  color: white;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+@mixin responsive($breakpoint) {
+  @media (max-width: $breakpoint) {
+    @content;
+  }
+}
+
+// Main styles
+.App {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+
+  h1 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: $primary-color;
+  }
+}
+
+// Controls
+.controls {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+
+  select {
+    padding: 0.5rem;
+    border-radius: $border-radius;
+    border: 1px solid #ccc;
+    background-color: white;
+  }
+}
+
+// Todo Form
+.todo-form {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+
+  .todo-input {
+    flex: 1;
+    min-width: 200px;
+    padding: 0.5rem;
+    border-radius: $border-radius;
+    border: 1px solid #ccc;
+  }
+
+  .priority-select {
+    padding: 0.5rem;
+    border-radius: $border-radius;
+    border: 1px solid #ccc;
+  }
+
+  .add-button {
+    @include button-base;
+    background-color: $primary-color;
+  }
+}
+
+// Todo List
+.todo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .todo-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: white;
+    border-radius: $border-radius;
+    box-shadow: $box-shadow;
+
+    .todo-content {
+      @include flex-center;
+      gap: 1rem;
+      flex: 1;
+
+      .todo-checkbox {
+        width: 1.2rem;
+        height: 1.2rem;
+      }
+
+      .todo-title {
+        flex: 1;
+
+        &.completed {
+          text-decoration: line-through;
+          color: $completed-color;
+        }
+
+        &.priority-high {
+          color: $high-priority;
+        }
+
+        &.priority-medium {
+          color: $medium-priority;
+        }
+
+        &.priority-low {
+          color: $low-priority;
+        }
+      }
+    }
+
+    .delete-button {
+      @include button-base;
+      background-color: $high-priority;
+    }
+  }
+}
+
+// Todo Stats
+.todo-stats {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background-color: white;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .stat-item {
+    text-align: center;
+
+    h3 {
+      margin: 0;
+      color: $primary-color;
+    }
+
+    p {
+      font-size: 1.5rem;
+      margin: 0.5rem 0;
+    }
+  }
+
+  .highest-priority {
+    text-align: center;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+
+    h3 {
+      margin: 0;
+      color: $primary-color;
+    }
+
+    p {
+      margin: 0.5rem 0;
+      font-weight: bold;
+    }
+  }
+}
+
+// Responsive styles
+@include responsive(600px) {
+  .App {
+    padding: 1rem;
+  }
+
+  .controls {
+    flex-direction: column;
+  }
+
+  .todo-form {
+    flex-direction: column;
+  }
+
+  .todo-item {
+    flex-direction: column;
+    gap: 1rem;
+
+    .todo-content {
+      width: 100%;
+    }
+
+    .delete-button {
+      width: 100%;
+    }
+  }
+}
