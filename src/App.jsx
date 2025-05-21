@@ -3,12 +3,17 @@ import './App.scss'
 import TodoForm from './components/TodoForm'
 import TodoList from './components/TodoList'
 import TodoStats from './components/TodoStats'
+import ErrorBoundary from './components/ErrorBoundary'
+import LoadingSpinner from './components/LoadingSpinner'
+import EmptyState from './components/EmptyState'
+import useLocalStorage from './hooks/useLocalStorage'
 
 function App() {
-  const [todos, setTodos] = useState([])
-  const [filter, setFilter] = useState('all')
+  const [todos, setTodos] = useLocalStorage('todos', [])
+  const [statusFilter, setStatusFilter] = useState('all')
   const [priorityFilter, setPriorityFilter] = useState('all')
-  const [sortBy, setSortBy] = useState('createdAt')
+  const [sortBy, setSortBy] = useState('date')
+  const [isLoading, setIsLoading] = useState(false)
 
   // Add todo handler
   const addTodo = (todo) => {
@@ -37,8 +42,8 @@ function App() {
     return todos
       .filter(todo => {
         // Status filter
-        if (filter === 'active') return !todo.completed
-        if (filter === 'completed') return todo.completed
+        if (statusFilter === 'active') return !todo.completed
+        if (statusFilter === 'completed') return todo.completed
         return true
       })
       .filter(todo => {
@@ -56,39 +61,62 @@ function App() {
       })
   }
 
+  const filteredTodos = getFilteredTodos()
+
   return (
-    <div className="App">
-      <h1>Todo App</h1>
+    <ErrorBoundary>
+      <div className="app">
+        <h1>Todo App</h1>
 
-      {/* Filter and Sort Controls */}
-      <div className="controls" role="group" aria-label="filter and sort controls">
-        <select value={filter} onChange={(e) => setFilter(e.target.value)}>
-          <option value="all">All</option>
-          <option value="active">Active</option>
-          <option value="completed">Completed</option>
-        </select>
+        <TodoForm addTodo={addTodo} />
 
-        <select value={priorityFilter} onChange={(e) => setPriorityFilter(e.target.value)}>
-          <option value="all">All Priorities</option>
-          <option value="Low">Low</option>
-          <option value="Medium">Medium</option>
-          <option value="High">High</option>
-        </select>
+        <div className="controls" role="group" aria-label="Filter and sort controls">
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            aria-label="Filter by status"
+          >
+            <option value="all">All</option>
+            <option value="active">Active</option>
+            <option value="completed">Completed</option>
+          </select>
 
-        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-          <option value="createdAt">Sort by Date</option>
-          <option value="priority">Sort by Priority</option>
-        </select>
+          <select
+            value={priorityFilter}
+            onChange={(e) => setPriorityFilter(e.target.value)}
+            aria-label="Filter by priority"
+          >
+            <option value="all">All Priorities</option>
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+          </select>
+
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            aria-label="Sort todos"
+          >
+            <option value="date">Sort by Date</option>
+            <option value="priority">Sort by Priority</option>
+          </select>
+        </div>
+
+        {isLoading ? (
+          <LoadingSpinner />
+        ) : filteredTodos.length === 0 ? (
+          <EmptyState />
+        ) : (
+          <TodoList
+            todos={filteredTodos}
+            toggleTodo={toggleTodo}
+            deleteTodo={deleteTodo}
+          />
+        )}
+
+        <TodoStats todos={todos} />
       </div>
-
-      <TodoStats todos={todos} />
-      <TodoForm addTodo={addTodo} />
-      <TodoList
-        todos={getFilteredTodos()}
-        toggleTodo={toggleTodo}
-        deleteTodo={deleteTodo}
-      />
-    </div>
+    </ErrorBoundary>
   )
 }
 
