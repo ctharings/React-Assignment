@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.scss'
 import TodoForm from './components/TodoForm'
 import TodoList from './components/TodoList'
@@ -14,6 +14,7 @@ function App() {
   const [priorityFilter, setPriorityFilter] = useState('all')
   const [sortBy, setSortBy] = useState('date')
   const [isLoading, setIsLoading] = useState(false)
+  const [editingTodo, setEditingTodo] = useState(null)
 
   // Add todo handler
   const addTodo = (todo) => {
@@ -23,6 +24,14 @@ function App() {
       completed: false,
       createdAt: new Date().toISOString()
     }])
+  }
+
+  // Edit todo handler
+  const editTodo = (id, updatedTodo) => {
+    setTodos(todos.map(todo =>
+      todo.id === id ? { ...todo, ...updatedTodo } : todo
+    ))
+    setEditingTodo(null)
   }
 
   // Toggle todo completion status
@@ -36,6 +45,29 @@ function App() {
   const deleteTodo = (id) => {
     setTodos(todos.filter(todo => todo.id !== id))
   }
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      // Ctrl/Cmd + N to focus on new todo input
+      if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
+        e.preventDefault()
+        document.querySelector('.todo-input')?.focus()
+      }
+      // Ctrl/Cmd + F to focus on filter
+      if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+        e.preventDefault()
+        document.querySelector('select[aria-label="Filter by status"]')?.focus()
+      }
+      // Escape to cancel editing
+      if (e.key === 'Escape' && editingTodo) {
+        setEditingTodo(null)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyPress)
+    return () => window.removeEventListener('keydown', handleKeyPress)
+  }, [editingTodo])
 
   // Get filtered and sorted todos
   const getFilteredTodos = () => {
@@ -67,8 +99,15 @@ function App() {
     <ErrorBoundary>
       <div className="app">
         <h1>Todo App</h1>
+        <div className="keyboard-shortcuts">
+          <p>Keyboard Shortcuts: Ctrl/Cmd + N (New Todo), Ctrl/Cmd + F (Filter), Esc (Cancel Edit)</p>
+        </div>
 
-        <TodoForm addTodo={addTodo} />
+        <TodoForm
+          addTodo={addTodo}
+          editingTodo={editingTodo}
+          editTodo={editTodo}
+        />
 
         <div className="controls" role="group" aria-label="Filter and sort controls">
           <select
@@ -111,6 +150,9 @@ function App() {
             todos={filteredTodos}
             toggleTodo={toggleTodo}
             deleteTodo={deleteTodo}
+            editTodo={editTodo}
+            setEditingTodo={setEditingTodo}
+            editingTodo={editingTodo}
           />
         )}
 
